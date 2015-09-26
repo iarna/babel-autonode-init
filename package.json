@@ -1,0 +1,22 @@
+{
+  "name": "babel-autonode-init",
+  "version": "1.0.0",
+  "description": "",
+  "main": "babel-autonode-init.js",
+  "bin": {
+    "babel-autonode-init": "babel-autonode-init.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Rebecca Turner <me@re-becca.org> (http://re-becca.org/)",
+  "license": "ISC",
+  "dependencies": {
+    "escape-string-regexp": "^1.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iarna/babel-autonode-init.git"
+  }
+}
