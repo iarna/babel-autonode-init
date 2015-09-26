@@ -5,7 +5,36 @@ var execFileSync = require('child_process').execFileSync
 var escapeStringRegexp = require('escape-string-regexp')
 
 // make sure we can read it
-var initialPackageJson = JSON.parse(fs.readFileSync('package.json'))
+try {
+  var initialPackageJson = JSON.parse(fs.readFileSync('package.json'))
+} catch (e) {
+  console.error("Error readying your package.json: " + e.message)
+  process.exit(1)
+}
+
+if (!initialPackageJson['babel-autonode.main']) {
+  var entryPoint = initialPackageJson.main
+  if (!entryPoint) {
+    try {
+      fs.statSync('index.js')
+      entryNoSrcFolder('index.js')
+    } catch (e) {
+      console.error("!! You don't yet appear to have a main js file. Be aware that")
+      console.error("!! babel-autonode will configure this to be src/index.js by defalt")
+    }
+  } else if (!/^src[/]/.test(entryPoint)) {
+    errorNoSrcFolder(entryPoint)
+  }
+}
+
+function errorNoSrcFolder (entryPoint) {
+  console.error('!! Your package is configured to use ' + entryPoint + ' as your main js file.')
+  console.error('!! babel-autonode needs this file to be in a "src/" folder. Make a src folder')
+  console.error('!! and move ' + entryPoint + ' into it and then update your package.json to have')
+  console.error('!! a property of main set to src/' + entryPoint)
+  process.exit(1)
+}
+
 var initialDeps = initialPackageJson.dependencies || {}
 var initialDevDeps = initialPackageJson.devDependencies || {}
 
@@ -41,7 +70,7 @@ appendScript('prestart', 'npm run build')
 
 if (!packageJson['babel-autonode.main']) {
   console.log("> changing entry point")
-  packageJson['babel-autonode.main'] = packageJson.main || 'index.js'
+  packageJson['babel-autonode.main'] = packageJson.main || 'src/index.js'
   packageJson.main = 'loader.js'
 }
 
