@@ -20,7 +20,7 @@ if (!initialPackageJson['babel-autonode.main']) {
       entryNoSrcFolder('index.js')
     } catch (e) {
       console.error("!! You don't yet appear to have a main js file. Be aware that")
-      console.error("!! babel-autonode will configure this to be src/index.js by defalt")
+      console.error("!! babel-autonode will configure this to be src/index.js by default")
     }
   } else if (!/^src[/]/.test(entryPoint)) {
     errorNoSrcFolder(entryPoint)
