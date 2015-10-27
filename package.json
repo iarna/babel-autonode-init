@@ -2,12 +2,15 @@
   "name": "babel-autonode-init",
   "version": "1.0.1",
   "description": "",
-  "main": "babel-autonode-init.js",
+  "main": "loader.js",
   "bin": {
-    "babel-autonode-init": "babel-autonode-init.js"
+    "babel-autonode-init": "loader.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "transpile": "babel-autonode",
+    "prepublish": "npm run transpile",
+    "prestart": "npm run transpile"
   },
   "keywords": [],
   "author": "Rebecca Turner <me@re-becca.org> (http://re-becca.org/)",
@@ -18,5 +21,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/iarna/babel-autonode-init.git"
-  }
+  },
+  "devDependencies": {
+    "babel": "^5.8.29",
+    "babel-autonode": "^1.1.0"
+  },
+  "babel-autonode.main": "src/babel-autonode-init.js"
 }

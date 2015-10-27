@@ -1,19 +1,21 @@
 #!/usr/bin/env node
-'use strict'
-var fs = require('fs')
-var execFileSync = require('child_process').execFileSync
-var escapeStringRegexp = require('escape-string-regexp')
+const fs = require('fs')
+const execFileSync = require('child_process').execFileSync
+const escapeStringRegexp = require('escape-string-regexp')
 
 // make sure we can read it
-try {
-  var initialPackageJson = JSON.parse(fs.readFileSync('package.json'))
-} catch (e) {
-  console.error("Error readying your package.json: " + e.message)
-  process.exit(1)
+function readPackageJson () {
+  try {
+    return JSON.parse(fs.readFileSync('package.json'))
+  } catch (e) {
+    console.error("Error readying your package.json: " + e.message)
+    process.exit(1)
+  }
 }
+const initialPackageJson = readPackageJson()
 
 if (!initialPackageJson['babel-autonode.main']) {
-  var entryPoint = initialPackageJson.main
+  const entryPoint = initialPackageJson.main
   if (!entryPoint) {
     try {
       fs.statSync('index.js')
@@ -35,10 +37,10 @@ function errorNoSrcFolder (entryPoint) {
   process.exit(1)
 }
 
-var initialDeps = initialPackageJson.dependencies || {}
-var initialDevDeps = initialPackageJson.devDependencies || {}
+const initialDeps = initialPackageJson.dependencies || {}
+const initialDevDeps = initialPackageJson.devDependencies || {}
 
-var toInstall = []
+const toInstall = []
 if (!initialDeps['babel'] && !initialDevDeps['babel']) toInstall.push('babel')
 if (!initialDeps['babel-autonode'] && !initialDevDeps['babel-autonode']) toInstall.push('babel-autonode')
 
@@ -48,19 +50,19 @@ if (toInstall.length) {
 }
 
 // get the version updated by npm install
-var packageJson = JSON.parse(fs.readFileSync('package.json'))
+const packageJson = JSON.parse(fs.readFileSync('package.json'))
 
-var scripts = packageJson.scripts = packageJson.scripts || {}
+const scripts = packageJson.scripts = packageJson.scripts || {}
 
 function appendScript (name, todo) {
-  var matchesAppended = new RegExp(' && ' + escapeStringRegexp(todo) + '$')
+  const matchesAppended = new RegExp(' && ' + escapeStringRegexp(todo) + '$')
   if (scripts[name] && scripts[name] !== todo && !matchesAppended.test(scripts[name])) {
     scripts[name] += ' && ' + todo
   } else if (scripts[name]) {
     return
   } else {
     scripts[name] = todo
-  } 
+  }
   console.log('> updating ' + name + ' to include: ' + todo)
 }
 
@@ -76,7 +78,12 @@ if (!packageJson['babel-autonode.main']) {
 
 console.log("> writing package.json")
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2))
-console.log("> writing loader.js")
-fs.writeFileSync('loader.js', "module.exports = require('babel-autonode/loader.js')\n")
+
+try {
+  fs.statSync('loader.js')
+} catch (ex) {
+  console.log("> writing loader.js")
+  fs.writeFileSync('loader.js', "module.exports = require('babel-autonode/loader.js')\n")
+}
 
 console.log('> babel-autonode installed!')
