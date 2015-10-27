@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-module.exports = require('babel-autonode/loader.js')
+module.exports = require('babel-autonode-loader')

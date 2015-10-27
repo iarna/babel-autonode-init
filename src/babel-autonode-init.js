@@ -49,6 +49,11 @@ if (toInstall.length) {
   execFileSync('npm',['install', '--save-dev'].concat(toInstall), {stdio: 'inherit'})
 }
 
+if (!initialDeps['babel-autonode-loader']) {
+  console.log('> installing babel-autonode-loader')
+  execFileSync('npm',['install', '--save babel-autonode-loader'], {stdio: 'inherit'})
+}
+
 // get the version updated by npm install
 const packageJson = JSON.parse(fs.readFileSync('package.json'))
 
@@ -83,7 +88,7 @@ try {
   fs.statSync('loader.js')
 } catch (ex) {
   console.log("> writing loader.js")
-  fs.writeFileSync('loader.js', "module.exports = require('babel-autonode/loader.js')\n")
+  fs.writeFileSync('loader.js', "module.exports = require('babel-autonode-loader')\n")
 }
 
 console.log('> babel-autonode installed!')

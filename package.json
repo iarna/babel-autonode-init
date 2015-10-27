@@ -16,15 +16,16 @@
   "author": "Rebecca Turner <me@re-becca.org> (http://re-becca.org/)",
   "license": "ISC",
   "dependencies": {
-    "escape-string-regexp": "^1.0.3"
+    "escape-string-regexp": "^1.0.3",
+    "babel-autonode-loader": "^1.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/iarna/babel-autonode-init.git"
   },
   "devDependencies": {
-    "babel": "^5.8.29",
-    "babel-autonode": "^1.1.0"
+    "babel-autonode": "^2.0.0",
+    "babel": "^5.8.29"
   },
   "babel-autonode.main": "src/babel-autonode-init.js"
 }
