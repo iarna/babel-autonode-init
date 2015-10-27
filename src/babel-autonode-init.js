@@ -66,9 +66,9 @@ function appendScript (name, todo) {
   console.log('> updating ' + name + ' to include: ' + todo)
 }
 
-appendScript('build', 'babel-autonode')
-appendScript('prepublish', 'npm run build')
-appendScript('prestart', 'npm run build')
+appendScript('transpile', 'babel-autonode')
+appendScript('prepublish', 'npm run transpile')
+appendScript('prestart', 'npm run transpile')
 
 if (!packageJson['babel-autonode.main']) {
   console.log("> changing entry point")
